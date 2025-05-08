@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SignUp - MenTrend</title>
+  <link rel="stylesheet" href="{% static 'css/style.css' %}"/>
+</head>
+<body>
+
+  <!-- Display messages -->
+  {% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}  
+
+  <!-- Register Section -->
+  <section class="signup-section">
+    <h1>SignUp</h1>
+    <form id="signupForm" action="{% url 'signup' %}" method="post">
+      {% csrf_token %}
+
+      <div class="row">
+        <div class="input-group">
+          <label for="fname">First Name</label>
+          <input type="text" id="fname" name="fname" placeholder="First Name" required />
+        </div>
+
+        <div class="input-group">
+          <label for="lname">Last Name</label>
+          <input type="text" id="lname" name="lname" placeholder="Last Name" required />
+        </div>
+      </div>
+
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" placeholder="example@gmail.com" required />
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" placeholder="Minimum 6 characters" required />
+      </div>
+
+      <div class="input-group">
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Re-enter password" required />
+      </div>
+
+      <button type="submit" class="send-btn">SignUp</button>
+    </form>
+  </section>
+
+  <script src="{% static 'scripts.js' %}"></script>
+</body>
+</html>

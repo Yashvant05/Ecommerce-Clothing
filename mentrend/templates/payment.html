@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Payment</title>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+  <h2>Processing your payment...</h2>
+
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <script>
+    var options = {
+      "key": "{{ razorpay_key }}",
+      "amount": "{{ amount }}",
+      "currency": "INR",
+      "name": "{{ name }}",
+      "description": "MenTrend Order",
+      "order_id": "{{ razorpay_order_id }}",
+      "handler": function (response){
+        // On successful payment
+        fetch("{% url 'payment_success' %}", {
+          method: "POST",
+          headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+          }
+        }).then(() => {
+          window.location.href = "{% url 'home' %}";
+        });
+      },
+      "prefill": {
+        "name": "{{ name }}",
+        "email": "{{ email }}"
+      },
+      "theme": {
+        "color": "#3399cc"
+      }
+    };
+    var rzp = new Razorpay(options);
+    rzp.open();
+  </script>
+  
+</body>
+</html>

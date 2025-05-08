@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Buy Now - MenTrend</title>
+  <link rel="stylesheet" href="{% static 'css/buynow.css' %}" />
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header>
+    <nav class="navbar">
+      <div class="center-title">Buy Now - MenTrend</div>
+    </nav>
+  </header>
+
+    <!-- Display messages -->
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+        <li class="{{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+  
+  <!-- Buy Now Section -->
+  <section class="buy-now-section" id="buy">
+    <h1>Buy Now</h1>
+    <p>Complete the form below to place your order with MenTrend.</p>
+    <form class="buy-now-form" action="{% url 'buynow' %}" method="post" id="buyform">
+      {% csrf_token %}
+
+      <div class="form-row">
+        <input type="text" id="name" name="name" value="{{ full_name }}" required />
+        <input type="email" id="email" name="email" value="{{ email }}" required />  
+      </div>
+      <input type="text" id="productName" name="productName" value="{{ product_name }}" readonly />
+      <input type="text" id="productPrice" name="productPrice" value="{{ product_price }}" readonly />
+      <input type="number" id="quantity" name="quantity" placeholder="Quantity" min="1" value="1" required />
+      <input type="text" id="totalPrice" name="totalPrice" placeholder="Total Price" readonly />
+      <textarea name="address" placeholder="Shipping Address" rows="4" required></textarea>
+      <div class="form-row">
+        <select name="payment_method" required style="padding: 0.8rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 5px; width: 100%;">
+          <option value="" disabled selected>Select Payment Method</option>
+          <option value="cod">Cash on Delivery</option>
+          <option value="online">Online</option>
+        </select>
+      </div>
+      <button type="submit" class="btn">Buy Now</button>
+    </form>
+  </section>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const quantityInput = document.getElementById('quantity');
+      const priceInput = document.getElementById('productPrice');
+      const totalInput = document.getElementById('totalPrice');
+    
+      function updateTotal() {
+        const quantity = parseInt(quantityInput.value) || 0;
+        const price = parseFloat(priceInput.value) || 0;
+        totalInput.value = (quantity * price).toFixed(2);
+      }
+    
+      quantityInput.addEventListener('input', updateTotal);
+      updateTotal();  // Calculate initial value on load
+    });    
+  </script>
+
+</body>
+</html>
